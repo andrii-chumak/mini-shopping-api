@@ -1,7 +1,7 @@
 from database import db
 
 
-class Order(db.Model):
+class OrderModel(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
