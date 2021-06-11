@@ -8,7 +8,6 @@ class OrderModel(db.Model):
     status = db.Column(db.String(20))
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('UserModel')
 
     def __init__(self, user_id):
         self.user_id = user_id
@@ -19,5 +18,11 @@ class OrderModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_order_by_id(cls, _id):
-        return cls.query.filter_by(id=_id)
+    def find_by_id(cls, _id):
+        return cls.query.filter_by(id=_id).first()
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+        }
