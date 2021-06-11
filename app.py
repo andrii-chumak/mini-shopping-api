@@ -2,9 +2,6 @@ from flask import Flask
 from flask_restful import Api
 
 from resources.user import User, UserRegister
-from resources.order import Order, OrderCreate
-from resources.product import Product, ProductCreate, ProductList
-from resources.cart import Cart
 
 from database import db
 
@@ -15,12 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 api = Api(app)
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserRegister, '/register')
-api.add_resource(Order, '/order/<int:order_id>')
-api.add_resource(OrderCreate, '/create-order/<int:user_id>')
-api.add_resource(Product, '/product/<int:product_id>')
-api.add_resource(ProductCreate, '/product-create')
-api.add_resource(ProductList, '/products')
-api.add_resource(Cart, '/cart/<int:user_id>')
+
 
 @app.before_first_request
 def create_tables():
