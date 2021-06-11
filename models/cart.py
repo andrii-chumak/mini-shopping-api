@@ -62,3 +62,7 @@ class CartModel(db.Model):
             'user_id': self.user_id,
             'products': products
         }
+
+    def delete_all_from_cart(self):
+        self.products = []
+        self.save_to_db()

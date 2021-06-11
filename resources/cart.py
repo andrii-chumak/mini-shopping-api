@@ -42,7 +42,6 @@ class Cart(Resource):
             return {'message': "This user doesn't exist"}, 404
 
         cart = CartModel.find_by_user_id(user_id)
-        cart.products = []
-        cart.save_to_db()
+        cart.delete_all_from_cart()
 
         return {'message': "The cart was cleaned"}, 404
