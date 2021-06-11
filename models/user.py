@@ -8,6 +8,8 @@ class UserModel(db.Model):
     username = db.Column(db.String(80))
     password = db.Column(db.String(40))
 
+    cart = db.relationship("CartModel", back_populates="user", uselist=False)
+
     def __init__(self, username, password):
         self.username = username
         self.password = password
