@@ -1,5 +1,6 @@
 from flask import request
 from flask_restful import Resource, reqparse
+from flask_jwt import jwt_required, current_identity
 
 from models.order import OrderModel
 from models.user import UserModel
@@ -16,6 +17,7 @@ class Order(Resource):
                         help="You need write status to change it"
                         )
 
+    @jwt_required()
     def get(self, order_id):
         order = OrderModel.find_by_id(order_id)
 
@@ -24,6 +26,7 @@ class Order(Resource):
 
         return order.to_json()
 
+    @jwt_required()
     def post(self, order_id):
         data = Order.parser.parse_args()
         order = OrderModel.find_by_id(order_id)
@@ -36,16 +39,14 @@ class Order(Resource):
 
 
 class OrderCreate(Resource):
-    def post(self, user_id):
-        user = UserModel.find_by_id(user_id)
-        if not user:
-            return {'message': "This user doesn't exist"}, 404
-
-        user_cart = CartModel.find_by_user_id(user_id)
+    @jwt_required()
+    def post(self):
+        user = current_identity
+        user_cart = CartModel.find_by_user_id(user.id)
         if len(user_cart.products.all()) == 0:
             return {'message': "Cart of this user is empty"}, 404
 
-        order = OrderModel(user_id, user_cart.products, calculate_total(user_cart))
+        order = OrderModel(user.id, user_cart.products, calculate_total(user_cart))
         order.save_to_db()
 
         for product in user_cart.products:
