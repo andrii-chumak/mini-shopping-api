@@ -8,7 +8,8 @@ class Product(Resource):
     parser.add_argument('name', type=str)
     parser.add_argument('price', type=float)
 
-    def get(self, product_id):
+    @classmethod
+    def get(cls, product_id):
         product = ProductModel.find_by_id(product_id)
 
         if product:
@@ -70,5 +71,6 @@ class ProductCreate(Resource):
 
 
 class ProductList(Resource):
-    def get(self):
+    @classmethod
+    def get(cls):
         return {'products': [product.to_json() for product in ProductModel.find_all()]}
