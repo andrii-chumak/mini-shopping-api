@@ -37,19 +37,20 @@ def check_preconditions(cart):
     return result, 'Ok'
 
 
-def calculate_subtotal(cart):
-    subtotal = 0
-    for product in cart.products:
-        subtotal += product.price * cart.get_quantity_by_product_id(product.id)
-
-    return subtotal
-
-
 def calculate_total(cart):
     total = 0
+    make_discounts(cart)
     for product in cart.products:
         quantity = cart.get_quantity_by_product_id(product.id)
         quantity_free = cart.get_number_free_products(product.id)
         total += product.price * (quantity - quantity_free)
 
     return total - cart.discount
+
+
+def calculate_subtotal(cart):
+    subtotal = 0
+    for product in cart.products:
+        subtotal += product.price * cart.get_quantity_by_product_id(product.id)
+
+    return subtotal

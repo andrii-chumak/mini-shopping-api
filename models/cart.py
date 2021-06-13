@@ -92,4 +92,3 @@ class CartModel(db.Model):
             'user_id': self.user_id,
             'products': products
         }
-
