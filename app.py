@@ -4,7 +4,7 @@ from flask_restful import Api
 from resources.user import User, UserRegister
 from resources.order import Order, OrderCreate
 from resources.product import Product, ProductCreate, ProductList
-from resources.cart import Cart
+from resources.cart import Cart, CartTotal
 
 from database import db
 
@@ -21,6 +21,7 @@ api.add_resource(Product, '/product/<int:product_id>')
 api.add_resource(ProductCreate, '/product-create')
 api.add_resource(ProductList, '/products')
 api.add_resource(Cart, '/cart/<int:user_id>')
+api.add_resource(CartTotal, '/cart-total/<int:user_id>')
 
 @app.before_first_request
 def create_tables():
