@@ -10,29 +10,38 @@ from resources.cart import Cart, CartTotal
 
 from database import db
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 
+def create_app(env=None):
+    app = Flask(__name__)
+    if env == 'test':
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 
-api = Api(app)
-jwt = JWT(app, authenticate, identity)
+    app.secret_key = ''
 
-api.add_resource(User, '/user/<int:user_id>')
-api.add_resource(UserRegister, '/register')
-api.add_resource(Order, '/order/<int:order_id>')
-api.add_resource(OrderCreate, '/create-order')
-api.add_resource(Product, '/product/<int:product_id>')
-api.add_resource(ProductCreate, '/product-create')
-api.add_resource(ProductList, '/products')
-api.add_resource(Cart, '/cart')
-api.add_resource(CartTotal, '/cart-total')
+    api = Api(app)
+    jwt = JWT(app, authenticate, identity)
 
+    api.add_resource(User, '/user/<int:user_id>')
+    api.add_resource(UserRegister, '/register')
+    api.add_resource(Order, '/order/<int:order_id>')
+    api.add_resource(OrderCreate, '/create-order')
+    api.add_resource(Product, '/product/<int:product_id>')
+    api.add_resource(ProductCreate, '/product-create')
+    api.add_resource(ProductList, '/products')
+    api.add_resource(Cart, '/cart')
+    api.add_resource(CartTotal, '/cart-total')
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+    db.init_app(app)
+
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
+
+    return app
 
 
 if __name__ == '__main__':
-    db.init_app(app)
+    app = create_app()
     app.run(port=5000, debug=True)
