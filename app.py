@@ -24,8 +24,8 @@ api.add_resource(OrderCreate, '/create-order/<int:user_id>')
 api.add_resource(Product, '/product/<int:product_id>')
 api.add_resource(ProductCreate, '/product-create')
 api.add_resource(ProductList, '/products')
-api.add_resource(Cart, '/cart/<int:user_id>')
-api.add_resource(CartTotal, '/cart-total/<int:user_id>')
+api.add_resource(Cart, '/cart')
+api.add_resource(CartTotal, '/cart-total')
 
 
 @app.before_first_request
