@@ -48,6 +48,13 @@ class OrderCreate(Resource):
         order = OrderModel(user_id, user_cart.products, calculate_total(user_cart))
         order.save_to_db()
 
+        for product in user_cart.products:
+            quantity = user_cart.get_quantity_by_product_id(product.id)
+            free_products = user_cart.get_number_free_products(product.id)
+
+            order.set_quantity_by_product_id(product.id, quantity)
+            order.set_number_free_products(product.id, free_products)
+
         user_cart.delete_all_from_cart()
 
         return order.to_json()

@@ -30,6 +30,7 @@ class OrderProduct(db.Model):
     quantity = db.Column(db.Integer, default=1)
     free_products = db.Column(db.Integer, default=0)
 
+
 class OrderModel(db.Model):
     __tablename__ = 'orders'
 
@@ -44,9 +45,8 @@ class OrderModel(db.Model):
 
     def __init__(self, user_id, products, total):
         self.user_id = user_id
-        self.products = products
         self.total = total
-
+        self.products = products
         self.status = OrderStatus.created
 
     def save_to_db(self):
@@ -61,9 +61,19 @@ class OrderModel(db.Model):
         order_product = db.session.query(OrderProduct).filter_by(order_id=self.id).filter_by(product_id=product_id).first()
         return order_product.quantity
 
+    def set_quantity_by_product_id(self, product_id, value):
+        order_product = db.session.query(OrderProduct).filter_by(order_id=self.id).filter_by(product_id=product_id)
+        order_product.update({OrderProduct.quantity: value})
+        self.save_to_db()
+
     def get_number_free_products(self, product_id):
         order_product = db.session.query(OrderProduct).filter_by(order_id=self.id).filter_by(product_id=product_id).first()
         return order_product.free_products
+
+    def set_number_free_products(self, product_id, value):
+        order_product = db.session.query(OrderProduct).filter_by(order_id=self.id).filter_by(product_id=product_id)
+        order_product.update({OrderProduct.free_products: value})
+        self.save_to_db()
 
     def to_json(self):
         products = [product.to_json() for product in self.products.all()]
