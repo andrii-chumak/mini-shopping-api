@@ -10,7 +10,8 @@ Firstly create a virtualenv and activate it, perhaps with the following command:
 > source venv/bin/activate
 
 Next, run 
-> pip install -r requirements.txt 
+> pip install -r requirements.txt
+
 to get the dependencies.
 
 Run app with
