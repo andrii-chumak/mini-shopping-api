@@ -30,7 +30,8 @@ class UserRegister(Resource):
 
 
 class User(Resource):
-    def get(self, user_id):
+    @classmethod
+    def get(cls, user_id):
         user = UserModel.find_by_id(user_id)
 
         if not user:
