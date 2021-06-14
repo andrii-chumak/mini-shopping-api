@@ -1,26 +1,34 @@
+from pytest import fixture
 from flask_sqlalchemy import SQLAlchemy
 from flask.testing import FlaskClient
 from tests.fixtures import app, db, client
 from models.product import ProductModel
-from resources.product import Product, ProductList, ProductCreate
+from resources.product import Product, ProductList
 
 
-def test_get(db: SQLAlchemy):
-    product = ProductModel(name="Test", price=5.25)
+@fixture()
+def product(db: SQLAlchemy, client: FlaskClient):
+    payload = dict(name="Test", price=5.25)
+    product = client.post(
+        '/product-create',
+        json=payload
+    ).get_json()
 
-    db.session.add(product)
-    db.session.commit()
-
-    result = Product.get(1)
-
-    assert result['name'] == product.name
-    assert result['price'] == product.price
+    return product
 
 
-def test_put(client: FlaskClient):
-    payload = dict(name='Test', price=7.8)
+def test_get(product: dict):
+
+    result = Product.get(product['id'])
+
+    assert result['name'] == product['name']
+    assert result['price'] == product['price']
+
+
+def test_put(client: FlaskClient, product: dict):
+    payload = dict(name='PutTest', price=7.8)
     result = client.put(
-        '/product/1',
+        '/product/{}'.format(product['id']),
         json=payload
     ).get_json()
 
@@ -28,13 +36,9 @@ def test_put(client: FlaskClient):
     assert result['price'] == payload['price']
 
 
-def test_delete(db: SQLAlchemy, client: FlaskClient):
-    product = ProductModel(name="Test", price=5.25)
-    db.session.add(product)
-    db.session.commit()
-
+def test_delete(client: FlaskClient, product: dict):
     result = client.delete(
-        '/product/1',
+        '/product/{}'.format(product['id']),
     )
 
     assert result.status_code == 200
@@ -57,11 +61,10 @@ def test_get_all(db: SQLAlchemy):
 
 def test_post(client: FlaskClient):
     payload = dict(name='Test', price=8.0)
-    client.post(
+    product = client.post(
         '/product-create',
         json=payload
     ).get_json()
 
-    result = client.get('/product/1').get_json()
-    assert result['name'] == payload['name']
-    assert result['price'] == payload['price']
+    assert product['name'] == payload['name']
+    assert product['price'] == payload['price']

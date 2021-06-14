@@ -1,5 +1,6 @@
 import pytest
 
+from flask.testing import FlaskClient
 from app import create_app
 
 
@@ -22,3 +23,20 @@ def db(app):
         yield db
         db.drop_all()
         db.session.commit()
+
+
+@pytest.fixture
+def user_token(client: FlaskClient):
+    payload = dict(username='new_user', password='new_user')
+
+    client.post(
+        '/register',
+        json=payload
+    )
+
+    token = client.post(
+        '/auth',
+        json=payload
+    ).get_json()['access_token']
+
+    return token

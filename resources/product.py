@@ -67,7 +67,7 @@ class ProductCreate(Resource):
         product = ProductModel(**data)
         product.save_to_db()
 
-        return {'message': 'Product successfully added'}, 201
+        return product.to_json(), 201
 
 
 class ProductList(Resource):
