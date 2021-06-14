@@ -10,6 +10,19 @@ class Product(Resource):
 
     @classmethod
     def get(cls, product_id):
+        """
+           Call this query to get product by product_id
+           ---
+           params:
+             - product_id:   int of product
+           responses:
+              200:
+                id:         int
+                name:       str
+                price:      float
+              404:
+                message: "Product with id '<id>' doesn't exist"
+        """
         product = ProductModel.find_by_id(product_id)
 
         if product:
@@ -17,6 +30,23 @@ class Product(Resource):
         return {'message': "Product with id '{}' doesn't exist".format(product_id)}, 404
 
     def put(self, product_id):
+        """
+           Call this query to update product by product_id
+           ---
+             - Content-Type: application/json
+           params:
+             - product_id:   int of product
+           json:
+             - name:        str
+             - price        float
+           responses:
+              200:
+                id:         int
+                name:       str
+                price:      float
+              404:
+                message: "Product with id '<id>' doesn't exist"
+        """
         data = Product.parser.parse_args()
         product = ProductModel.find_by_id(product_id)
 
@@ -35,6 +65,17 @@ class Product(Resource):
         return product.to_json()
 
     def delete(self, product_id):
+        """
+           Call this query to delete product by product_id
+           ---
+           params:
+             - product_id:   int
+           responses:
+              200:
+                message: "Product deleted"
+              404:
+                message: "Product with id '<id>' doesn't exist"
+        """
         product = ProductModel.find_by_id(product_id)
         if product:
             product.delete_from_db()
@@ -59,6 +100,22 @@ class ProductCreate(Resource):
                         )
 
     def post(self):
+        """
+           Call this query to create new product
+           ---
+           headers:
+             - Content-Type: application/json
+           json:
+             - name:        str
+             - price        float
+           responses:
+              200:
+                id:         int
+                name:       str
+                price:      float
+              404:
+                message: "Product with id '<id>' doesn't exist"
+        """
         data = ProductCreate.parser.parse_args()
 
         if data['price'] <= 0:
@@ -73,4 +130,14 @@ class ProductCreate(Resource):
 class ProductList(Resource):
     @classmethod
     def get(cls):
+        """
+           Call this query to get list of all products
+           ---
+           responses:
+              200:
+                products:
+                    id:         int
+                    name:       str
+                    price:      float
+        """
         return {'products': [product.to_json() for product in ProductModel.find_all()]}
