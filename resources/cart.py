@@ -35,7 +35,7 @@ class Cart(Resource):
 
         product = ProductModel.find_by_id(data['product_id'])
         if not product:
-            return {'message': "This product doesn't exist"}
+            return {'message': "This product doesn't exist"}, 404
 
         cart.add_product(product)
         result, message = check_preconditions(cart)

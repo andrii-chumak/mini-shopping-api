@@ -68,3 +68,11 @@ def test_post(client: FlaskClient):
 
     assert product['name'] == payload['name']
     assert product['price'] == payload['price']
+
+    payload = dict(name='Test', price=0.0)
+    result = client.post(
+        '/product-create',
+        json=payload
+    )
+
+    assert result.status_code == 400
