@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/andrii-chumak/mini-shopping-api/badge.svg?branch=dev-2.0)](https://coveralls.io/github/andrii-chumak/mini-shopping-api?branch=dev-2.0)
+[![Coverage Status](https://coveralls.io/repos/github/andrii-chumak/mini-shopping-api/badge.svg)](https://coveralls.io/github/andrii-chumak/mini-shopping-api)
 
 # mini-shopping-api
 
