@@ -25,7 +25,7 @@ Run app with
 
 API documentation you can see by the link below.
 
-[API documentation](https://web.postman.co/workspace/My-Workspace~81445ad8-1a44-4e4b-8912-f2eb2b24b119/documentation/13917160-4f5b5ac3-8a51-44c0-aa0b-836a1f814955)
+[API documentation](https://documenter.getpostman.com/view/13917160/TzeUmoSd)
 
 ## Running tests
 
