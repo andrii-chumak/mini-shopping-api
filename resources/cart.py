@@ -21,6 +21,22 @@ class Cart(Resource):
 
     @jwt_required()
     def get(self):
+        """
+            Call this query to get user's cart
+            ---
+            headers:
+              - Authorization: JWT {{jwt_token}}
+            responses:
+              200:
+                id:         id of cart in db
+                user_id:    id of cart owner
+                products:   list of products in the cart
+              401:
+                description: "Signature verification failed"
+                error:       "Invalid token"
+                status_code: 401
+
+        """
         user = current_identity
 
         cart = CartModel.find_by_user_id(user.id)
@@ -28,6 +44,26 @@ class Cart(Resource):
 
     @jwt_required()
     def post(self):
+        """
+            Call this query to get add product to the user's cart
+            ---
+            headers:
+              - Authorization: JWT {{jwt_token}}
+              - Content-Type: application/json
+            json:
+              - product_id: int
+            responses:
+              200:
+                id:         id of cart in db
+                user_id:    id of cart owner
+                products:   list of products in the cart
+              401:
+                description: "Signature verification failed"
+                error:       "Invalid token"
+                status_code: 401
+              404:
+                "message": "This product doesn't exist"
+        """
         data = Cart.parser.parse_args()
         user = current_identity
 
@@ -58,6 +94,23 @@ class Cart(Resource):
 class CartTotal(Resource):
     @jwt_required()
     def get(self):
+        """
+            Call this query to get add product to the user's cart
+            ---
+            headers:
+              - Authorization: JWT {{jwt_token}}
+            responses:
+              200:
+                id:         id of cart in db
+                user_id:    id of cart owner
+                products:   list of products in the cart
+                subtotal:   float
+                total:      float
+              401:
+                description: "Signature verification failed"
+                error:       "Invalid token"
+                status_code: 401
+        """
         user = current_identity
         cart = CartModel.find_by_user_id(user.id)
         products = [product.to_json() for product in cart.products.all()]
