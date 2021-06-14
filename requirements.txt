@@ -5,3 +5,6 @@ Flask-SQLAlchemy==2.5.1
 pytest==6.2.4
 pytest-cov==2.12.1
 coveralls==1.11.1
+
+uwsgi # for heroku
+psycopg2 # for heroku postgres
