@@ -5,16 +5,17 @@
 Simple API imitating work of internet store.
 
 ## Running the app
-Firstly create a virtualenv and activate it, perhaps with the following command:
+Firstly clone code from git repo to folder on your computer. 
+After it create a virtualenv and activate it, perhaps with the following command:
 
 > virtualenv -p python3 venv
 
 > source venv/bin/activate
 
-Next, run 
-> pip install -r requirements.txt
+Next, run move to mini-shopping-api folder and get dependencies:
+> cd mini-shopping-api
 
-to get the dependencies.
+> pip install -r requirements.txt
 
 Run app with
 
