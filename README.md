@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/andrii-chumak/mini-shopping-api/badge.svg?branch=dev-2.0)](https://coveralls.io/github/andrii-chumak/mini-shopping-api?branch=dev-2.0)
+
 # mini-shopping-api
 
 Simple API imitating work of internet store.
